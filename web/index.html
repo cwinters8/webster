@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Static editor</title>
+  <link rel="stylesheet" href="./assets/simple.css/simple.css">
+  <link rel="stylesheet" href="./assets/styles.css">
+  <link rel="stylesheet" href="./assets/trix/trix.css">
+  <script src="./assets/trix/trix.umd.min.js"></script>
+</head>
+
+<body>
+  <h1>Static content editor</h1>
+  <form action="">
+    <div class="row"><button type="submit">Save</button></div>
+    <input type="hidden" name="trix" id="trix">
+    <trix-editor input="trix"></trix-editor>
+    <div class="row"><button type="submit">Save</button></div>
+  </form>
+</body>
+
+</html>
