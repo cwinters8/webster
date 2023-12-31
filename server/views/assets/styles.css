@@ -1,0 +1,75 @@
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito/Nunito-Black.ttf") format("ttf");
+  font-weight: bolder;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito/Nunito-Bold.ttf") format("ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito/Nunito-SemiBold.ttf") format("ttf");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito/Nunito-Medium.ttf") format("ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito/Nunito-MediumItalic.ttf") format("ttf");
+  font-weight: 500;
+  font-style: italic;
+}
+
+:root {
+  --sans-font: Nunito, "Avenir Next", Avenir, "Nimbus Sans L", Roboto,
+    "Noto Sans", "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
+  --bg: #2d4884;
+  --accent-bg: #829cbc;
+  --text: #daf6e3;
+  --accent: #50d673;
+  --accent-text: #1a2b4c;
+  --text-light: #c5d3ca;
+  --border: #ec4e20;
+  --code: #ec4e20;
+  --preformatted: #020300;
+  --disabled: #6b0f1a;
+  --marked: #f1a208;
+}
+
+html {
+  font-weight: 500;
+}
+
+h1 {
+  font-weight: bolder;
+}
+
+button {
+  margin: 1rem 0;
+  width: 8rem;
+  font-weight: 600;
+}
+
+.row {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: end;
+}
+
+body {
+  padding-bottom: 4rem;
+}

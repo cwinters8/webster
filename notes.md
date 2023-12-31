@@ -4,4 +4,6 @@ Possibly use [GitHub's JS library](https://github.com/octokit/octokit.js) for co
 
 Would be better to run a server.
 
-Host on Oracle Cloud for free - each tenancy gets ~4 OCPUs and ~24 GB memory free every month for 'Ampere' (arm) compute
+Host on Oracle Cloud [Container Instances](https://www.oracle.com/cloud/cloud-native/container-instances/) for free - each tenancy gets ~4 OCPUs and ~24 GB memory free every month for 'Ampere' (arm) compute
+
+[GitHub module for Go](https://github.com/google/go-github)
