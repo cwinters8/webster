@@ -7,6 +7,8 @@ Host on Oracle Cloud [Container Instances](https://www.oracle.com/cloud/cloud-na
 [GitHub module for Go](https://github.com/google/go-github)
 [git module](https://pkg.go.dev/github.com/go-git/go-git/v5) to enable any git provider
 
-## TODO
+## tasks
 
+- [ ] Pass existing content to editor
+- [ ] Stay on the same page after POST request
 - [ ] [Custom skin](https://www.tiny.cloud/docs/tinymce/latest/creating-a-skin/) for editor

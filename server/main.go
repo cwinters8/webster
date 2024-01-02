@@ -3,7 +3,6 @@ package main
 import (
 	"embed"
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -14,7 +13,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html/v2"
-	"github.com/google/uuid"
 )
 
 const port = 8888
@@ -54,22 +52,8 @@ func setup() error {
 		if err := c.BodyParser(&content); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, "failed to parse text from editor:", err.Error())
 		}
-		tmpl, err := template.New("t").Parse(content.Text)
-		if err != nil {
-			return fiber.NewError(fiber.StatusBadRequest, "content failed to parse as HTML:", err.Error())
-		}
-		dir, err := os.MkdirTemp("tmp", "")
-		if err != nil {
-			return fiber.NewError(fiber.StatusInternalServerError, "failed to create directory:", err.Error())
-		}
-		id := uuid.New()
-		f, err := os.Create(fmt.Sprintf("%s/%s.html", dir, id.String()))
-		if err != nil {
-			return fiber.NewError(fiber.StatusInternalServerError, "failed to create file:", err.Error())
-		}
-		// execute template and write to disk
-		if err := tmpl.Execute(f, nil); err != nil {
-			return fiber.NewError(fiber.StatusInternalServerError, "failed to execute template:", err.Error())
+		if err := content.WriteTemp(); err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
 		return c.SendStatus(201)
 	})
