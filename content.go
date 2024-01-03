@@ -1,4 +1,4 @@
-package craftly
+package webster
 
 import (
 	"errors"

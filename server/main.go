@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/cwinters8/craftly"
+	"github.com/cwinters8/webster"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -38,7 +38,7 @@ func setup() error {
 	}))
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("views/index", fiber.Map{
-			"Title":   "Craftly",
+			"Title":   "Webster",
 			"Content": "Hello, World!",
 		})
 	})
@@ -51,7 +51,7 @@ func setup() error {
 	// takes submitted content from editor and saves to a file
 	// TODO: this should be a specific route for writing to a temp file
 	app.Post("/content", func(c *fiber.Ctx) error {
-		var content craftly.Content
+		var content webster.Content
 		if err := c.BodyParser(&content); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, "failed to parse text from editor:", err.Error())
 		}

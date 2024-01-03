@@ -1,16 +1,16 @@
-package craftly_test
+package webster_test
 
 import (
 	"fmt"
 	"os"
 	"testing"
 
-	"github.com/cwinters8/craftly"
+	"github.com/cwinters8/webster"
 )
 
 func TestSave(t *testing.T) {
 	dir := "testdata/hello"
-	c := craftly.Content{
+	c := webster.Content{
 		Text: "<h1>Hello, World!</h1>",
 		Path: fmt.Sprintf("%s/index.html", dir),
 	}

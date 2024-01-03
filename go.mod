@@ -1,4 +1,4 @@
-module github.com/cwinters8/craftly
+module github.com/cwinters8/webster
 
 go 1.21.5
 
