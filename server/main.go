@@ -39,7 +39,7 @@ func setup() error {
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("views/index", fiber.Map{
 			"Title":   "Webster",
-			"Content": "Hello, World!",
+			"Content": "<h1>Hello, World!</h1>",
 		})
 	})
 
