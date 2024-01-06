@@ -30,7 +30,7 @@ func setup() error {
 	})
 	app.Use(compress.New(), logger.New(), favicon.New(favicon.Config{
 		FileSystem: fs,
-		File:       "views/assets/images/favicon.ico",
+		File:       "views/assets/images/favicon.png",
 	}))
 	app.Use("/assets", filesystem.New(filesystem.Config{
 		Root:       fs,

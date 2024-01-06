@@ -18,8 +18,11 @@
 </head>
 
 <body>
-  <h1>{{ .Title }}</h1>
-  <p>Helping you create content for your static websites.</p>
+  <div class="horizontal">
+    <img src="./assets/images/Webster.png" alt="Webster the pencil">
+    <h1>{{ .Title }}</h1>
+  </div>
+  <p>Helping you craft content for your static websites.</p>
   <form action="/content" method="post">
     <div class="row"><button type="submit">Save</button></div>
     <textarea name="editor" id="editor">{{ .Content }}</textarea>

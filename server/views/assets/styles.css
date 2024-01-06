@@ -47,7 +47,7 @@
     "Noto Sans", "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
   --bg: #2d4884;
   --accent-bg: #829cbc;
-  --text: #daf6e3;
+  --text: #ffffff;
   --accent: #50d673;
   --accent-text: #1a2b4c;
   --text-light: #c5d3ca;
@@ -81,4 +81,17 @@ button {
 
 body {
   padding-bottom: 4rem;
+}
+
+.horizontal {
+  display: flex;
+  max-height: 8rem;
+  margin-top: 2rem;
+  align-content: space-between;
+}
+
+.horizontal h1 {
+  align-self: flex-end;
+  margin-left: 1rem;
+  margin-bottom: 0;
 }
