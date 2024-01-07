@@ -15,3 +15,7 @@ resource "oci_objectstorage_bucket" "output" {
 data "oci_objectstorage_namespace" "main" {
   compartment_id = oci_identity_compartment.main.id
 }
+
+output "storage_endpoint" {
+  value = "https://${data.oci_objectstorage_namespace.main.namespace}.compat.objectstorage.${var.region}.oraclecloud.com"
+}

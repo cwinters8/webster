@@ -13,3 +13,7 @@ Then initialize terraform using the backend file
 ```sh
 terraform init -backend-config="config.pg.tfbackend"
 ```
+
+## secret keys
+
+Need customer secret key to access S3 compatible APIs. It seems this must be generated from the console, because creating it from the command line does not show the secret key.

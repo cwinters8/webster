@@ -10,5 +10,5 @@ terraform {
 }
 
 provider "oci" {
-  region = "us-chicago-1"
+  region = var.region
 }
