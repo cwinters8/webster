@@ -2,7 +2,6 @@ resource "oci_identity_compartment" "main" {
   name          = "webster"
   description   = "Webster resources"
   enable_delete = true
-  # compartment_id = var.parent_compartment_ocid
 }
 
 resource "oci_objectstorage_bucket" "output" {

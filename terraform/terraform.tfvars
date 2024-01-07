@@ -1,1 +1,1 @@
-parent_compartment_ocid = "ocid1.tenancy.oc1..aaaaaaaad4mrhvlw4zyspfw7ad4hqyn7g2bkb5s7srhwonnwj2jnobcpq2kq"
+
