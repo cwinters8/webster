@@ -1,0 +1,18 @@
+tasks:
+  test:
+    usage: Run tests with environment variables from Doppler
+    args:
+      path:
+        usage: path to test
+    options:
+      verbose:
+        usage: verbose mode
+        type: bool
+        default: false
+        short: v
+    run:
+      - when:
+          equal: { verbose: false }
+        command: doppler run -p webster -c dev -- go test ${path}
+      - when: verbose
+        command: doppler run -p webster -c dev -- go test -v ${path}

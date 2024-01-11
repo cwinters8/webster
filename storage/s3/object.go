@@ -1,4 +1,4 @@
-package storage
+package s3
 
 // for interacting with S3-compatible object storage
 
@@ -47,6 +47,21 @@ func (c *Client) NewBucket(ctx context.Context, name string, versioning bool) er
 		if err := c.min.EnableVersioning(ctx, name); err != nil {
 			return fmt.Errorf("failed to enable bucket versioning: %w", err)
 		}
+	}
+	return nil
+}
+
+func (c *Client) BucketExists(ctx context.Context, name string) (bool, error) {
+	exists, err := c.min.BucketExists(ctx, name)
+	if err != nil {
+		return false, fmt.Errorf("failed to check if bucket exists: %w", err)
+	}
+	return exists, nil
+}
+
+func (c *Client) RemoveBucket(ctx context.Context, name string) error {
+	if err := c.min.RemoveBucket(ctx, name); err != nil {
+		return fmt.Errorf("failed to remove bucket: %w", err)
 	}
 	return nil
 }
