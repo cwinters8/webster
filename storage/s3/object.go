@@ -5,6 +5,8 @@ package s3
 import (
 	"context"
 	"fmt"
+	"os"
+	"path"
 
 	"github.com/cwinters8/webster/headers"
 	"github.com/minio/minio-go/v7"
@@ -66,23 +68,44 @@ func (c *Client) RemoveBucket(ctx context.Context, name string) error {
 	return nil
 }
 
-// PutFile writes a file at path to the specified bucket, using name as the object name
+// PutFile writes a file at path to bucket/name
 func (c *Client) PutFile(ctx context.Context, bucket, name, path string, options *PutOptions) (versionID string, size int64, err error) {
-	info, err := c.min.FPutObject(ctx, bucket, name, path, *options.toMin())
+	opts := minio.PutObjectOptions{}
+	if options != nil {
+		opts = *options.toMin()
+	}
+	info, err := c.min.FPutObject(ctx, bucket, name, path, opts)
 	if err != nil {
 		return "", 0, fmt.Errorf("failed to put file: %w", err)
 	}
 	return info.VersionID, info.Size, nil
 }
 
-// GetFile attempts to retrieve the file specified by path from bucket and writes the file to path
+// GetFile attempts to retrieve the file specified by name from bucket and writes the file to target
+//
+// if target is a directory, the base filename from name will be appended to the target path
 //
 // An empty string can be passed for versionID to retrieve the latest version
-func (c *Client) GetFile(ctx context.Context, bucket, name, path, versionID string) error {
-	if err := c.min.FGetObject(ctx, bucket, name, path, minio.GetObjectOptions{
+func (c *Client) GetFile(ctx context.Context, bucket, name, target, versionID string) error {
+	info, err := os.Stat(target)
+	if err != nil {
+		return fmt.Errorf("failed to stat target: %w", err)
+	}
+	if info.IsDir() {
+		fileName := path.Base(name)
+		target = path.Join(target, fileName)
+	}
+	if err := c.min.FGetObject(ctx, bucket, name, target, minio.GetObjectOptions{
 		VersionID: versionID,
 	}); err != nil {
 		return fmt.Errorf("failed to get file: %w", err)
+	}
+	return nil
+}
+
+func (c *Client) RemoveFile(ctx context.Context, bucket, name string) error {
+	if err := c.min.RemoveObject(ctx, bucket, name, minio.RemoveObjectOptions{}); err != nil {
+		return fmt.Errorf("failed to remove object: %w", err)
 	}
 	return nil
 }
