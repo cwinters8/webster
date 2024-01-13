@@ -1,18 +1,10 @@
 tasks:
-  test:
-    usage: Run tests with environment variables from Doppler
-    args:
-      path:
-        usage: path to test
-    options:
-      verbose:
-        usage: verbose mode
-        type: bool
-        default: false
-        short: v
-    run:
-      - when:
-          equal: { verbose: false }
-        command: doppler run -p webster -c dev -- go test ${path}
-      - when: verbose
-        command: doppler run -p webster -c dev -- go test -v ${path}
+  env:
+    usage: Launches a subshell with variables from Doppler available
+    run: doppler run -p webster -c dev -- /bin/zsh
+  push:
+    usage: Syncs files to the synced directory in iCloud Drive
+    run: rsync -a --exclude-from=.gitignore --exclude=.git . ~/Documents/code_sync/webster
+  pull:
+    usage: Syncs files from the synced directory in iCloud Drive
+    run: rsync -a --exclude-from=.gitignore --exclude=.git ~/Documents/code_sync/webster .
