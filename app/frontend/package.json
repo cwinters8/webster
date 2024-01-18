@@ -9,9 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tiptap/pm": "^2.1.16",
-    "@tiptap/starter-kit": "^2.1.16",
-    "@tiptap/vue-3": "^2.1.16",
+    "@tinymce/tinymce-vue": "^5.1.1",
+    "tinymce": "^6.8.2",
     "vue": "^3.2.37"
   },
   "devDependencies": {
