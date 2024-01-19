@@ -27,22 +27,21 @@ const props = defineProps<{
   id?: string
 }>()
 
+const defaultHTML = "<h1>Hello!</h1><p>Edit this content to get started ⚡️</p>"
 const html = ref("")
 
 onMounted(() => {
   if (props.id && props.id.length > 0) {
     // TODO: call Go function to retrieve content
+  } else {
+    html.value = defaultHTML
   }
 })
 </script>
 
 <template>
   <div class="container">
-    <Editor
-      :init="{ height: '100vh' }"
-      initial-value="<h1>Hello, Webster</h1>"
-      v-model="html"
-    />
+    <Editor :init="{ height: '100vh' }" v-model="html" />
   </div>
 </template>
 
