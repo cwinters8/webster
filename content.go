@@ -19,6 +19,36 @@ var (
 	ErrParseHTML = errors.New("content failed to parse as HTML")
 )
 
+// file must be a qualified path
+//
+// if file does not exist, a new one is created
+func Load(file string) (*Content, error) {
+	if len(file) == 0 {
+		return nil, fmt.Errorf("file must not be empty")
+	}
+	contents, err := os.ReadFile(file)
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			dir := path.Dir(file)
+			if dir != "." {
+				if err := os.MkdirAll(dir, 0755); err != nil {
+					return nil, fmt.Errorf("failed to create directory `%s`: %w", dir, err)
+				}
+			}
+			if _, err := os.Create(file); err != nil {
+				return nil, fmt.Errorf("failed to create file `%s`: %w", file, err)
+			}
+			return &Content{Path: file}, nil
+		}
+		return nil, fmt.Errorf("failed to read file `%s`: %w", file, err)
+	}
+	return &Content{
+		Text: string(contents),
+		Path: file,
+	}, nil
+}
+
+// may not be needed
 func (c *Content) WriteTemp() error {
 	tmpl, err := c.Parse()
 	if err != nil {
