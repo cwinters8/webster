@@ -48,7 +48,7 @@ func TestContent(t *testing.T) {
 		file := "testdata/fake/index.html"
 		remove := func(t *testing.T) {
 			if err := os.RemoveAll(file); err != nil {
-				t.Fatalf("failed to remove pre-existing file: %v", err)
+				t.Fatalf("failed to remove file: %v", err)
 			}
 		}
 		// ensure file doesn't already exist
