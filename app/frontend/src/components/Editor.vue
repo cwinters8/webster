@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+import { onMounted, ref } from "vue"
 import "tinymce"
 import Editor from "@tinymce/tinymce-vue"
 
@@ -20,7 +21,19 @@ import "tinymce/plugins/lists"
 import "tinymce/plugins/table"
 
 // content styling
-import "tinymce/skins/ui/oxide/content.js"
+import "tinymce/skins/content/default/content.js"
+
+const props = defineProps<{
+  id?: string
+}>()
+
+const html = ref("")
+
+onMounted(() => {
+  if (props.id && props.id.length > 0) {
+    // TODO: call Go function to retrieve content
+  }
+})
 </script>
 
 <template>
@@ -28,6 +41,7 @@ import "tinymce/skins/ui/oxide/content.js"
     <Editor
       :init="{ height: '100vh' }"
       initial-value="<h1>Hello, Webster</h1>"
+      v-model="html"
     />
   </div>
 </template>
