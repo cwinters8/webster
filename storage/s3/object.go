@@ -4,11 +4,14 @@ package s3
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"path"
 
 	"github.com/cwinters8/webster/headers"
+	"github.com/cwinters8/webster/utils"
+
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )
@@ -101,6 +104,18 @@ func (c *Client) GetFile(ctx context.Context, bucket, name, target, versionID st
 		return fmt.Errorf("failed to get file: %w", err)
 	}
 	return nil
+}
+
+var ErrDoesNotExist = utils.Error{Msg: "does not exist"}
+
+func (c *Client) FileExists(ctx context.Context, bucket, name string) (bool, error) {
+	if _, err := c.min.StatObject(ctx, bucket, name, minio.GetObjectOptions{}); err != nil {
+		if errors.Is(ErrDoesNotExist, err) {
+			return false, nil
+		}
+		return false, fmt.Errorf("failed to get file info: %w", err)
+	}
+	return true, nil
 }
 
 func (c *Client) RemoveFile(ctx context.Context, bucket, name string) error {
