@@ -12,7 +12,7 @@ import (
 func TestContent(t *testing.T) {
 	dir := "testdata/hello"
 	c := webster.Content{
-		Text: "<h1>Hello, World!</h1>",
+		HTML: "<h1>Hello, World!</h1>",
 		Path: fmt.Sprintf("%s/index.html", dir),
 	}
 	if err := c.Save(); err != nil {
@@ -28,8 +28,8 @@ func TestContent(t *testing.T) {
 		t.Fatalf("failed to read %s: %v", c.Path, err)
 	}
 	got := string(out)
-	if got != c.Text {
-		t.Errorf("wanted text `%s`; got `%s`", c.Text, got)
+	if got != c.HTML {
+		t.Errorf("wanted text `%s`; got `%s`", c.HTML, got)
 	} else {
 		t.Log(got)
 	}
@@ -39,8 +39,8 @@ func TestContent(t *testing.T) {
 		if err != nil {
 			t.Fatalf("failed to load: %v", err)
 		}
-		if content.Text != c.Text {
-			t.Errorf("wanted text `%s`; got `%s`", c.Text, content.Text)
+		if content.HTML != c.HTML {
+			t.Errorf("wanted text `%s`; got `%s`", c.HTML, content.HTML)
 		}
 	})
 
@@ -70,13 +70,13 @@ func TestContent(t *testing.T) {
 				t.Fatalf("failed to stat file: %v", err)
 			}
 		}
-		if len(content.Text) > 0 {
-			t.Errorf("wanted content text to be empty; got `%s`", content.Text)
+		if len(content.HTML) > 0 {
+			t.Errorf("wanted content text to be empty; got `%s`", content.HTML)
 		}
 
 		// validate file can be written to
 		text := "<p>Some fake data</p>"
-		content.Text = text
+		content.HTML = text
 		if err := content.Save(); err != nil {
 			t.Fatalf("failed to save new content: %v", err)
 		}

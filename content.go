@@ -6,12 +6,22 @@ import (
 	"html/template"
 	"os"
 	"path"
+	"time"
+
+	"github.com/google/uuid"
 )
 
 type Content struct {
-	Text     string `form:"editor"`
-	Path     string
+	ID       uuid.UUID `db:"id"`
+	HTML     string    `db:"html"`
+	Path     string    `db:"path"`
+	Versions map[uuid.UUID]Version
 	tempFile *os.File
+}
+
+type Version struct {
+	ID        uuid.UUID `db:"id"`
+	Timestamp time.Time `db:"timestamp"`
 }
 
 var (
@@ -43,7 +53,7 @@ func Load(file string) (*Content, error) {
 		return nil, fmt.Errorf("failed to read file `%s`: %w", file, err)
 	}
 	return &Content{
-		Text: string(contents),
+		HTML: string(contents),
 		Path: file,
 	}, nil
 }
@@ -92,10 +102,10 @@ func (c *Content) Save() error {
 }
 
 func (c *Content) Parse() (*template.Template, error) {
-	if len(c.Text) == 0 {
+	if len(c.HTML) == 0 {
 		return nil, ErrEmptyText
 	}
-	tmpl, err := template.New("t").Parse(c.Text)
+	tmpl, err := template.New("t").Parse(c.HTML)
 	if err != nil {
 		return nil, fmt.Errorf("%w: %w", ErrParseHTML, err)
 	}

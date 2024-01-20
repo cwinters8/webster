@@ -24,7 +24,7 @@ func TestBucketOps(t *testing.T) {
 
 	// new bucket
 	bucket := "webster-test"
-	if err := client.NewBucket(ctx, bucket, false); err != nil {
+	if err := client.NewBucket(ctx, bucket, true); err != nil {
 		t.Fatalf("failed to create bucket: %v", err)
 	}
 	defer func(t *testing.T) {
@@ -55,7 +55,7 @@ func TestBucketOps(t *testing.T) {
 			t.Fatalf("failed to write file: %v", err)
 		}
 
-		_, size, err := client.PutFile(ctx, bucket, file, p, nil)
+		version, size, err := client.PutFile(ctx, bucket, file, p, nil)
 		if err != nil {
 			t.Fatalf("failed to put file in bucket: %v", err)
 		}
@@ -66,6 +66,10 @@ func TestBucketOps(t *testing.T) {
 		}(t)
 		if size == 0 {
 			t.Errorf("wanted size of put file to be greater than 0")
+		}
+		t.Log("version ID:", version)
+		if len(version) == 0 {
+			t.Errorf("wanted non-empty version ID")
 		}
 
 		// retrieve it and verify contents
