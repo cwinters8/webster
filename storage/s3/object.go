@@ -104,8 +104,15 @@ func (c *Client) GetFile(ctx context.Context, bucket, name, target, versionID st
 }
 
 func (c *Client) RemoveFile(ctx context.Context, bucket, name string) error {
-	if err := c.min.RemoveObject(ctx, bucket, name, minio.RemoveObjectOptions{}); err != nil {
-		return fmt.Errorf("failed to remove object: %w", err)
+	for obj := range c.min.ListObjects(ctx, bucket, minio.ListObjectsOptions{
+		Prefix:       name,
+		WithVersions: true,
+	}) {
+		if err := c.min.RemoveObject(ctx, bucket, name, minio.RemoveObjectOptions{
+			VersionID: obj.VersionID,
+		}); err != nil {
+			return fmt.Errorf("failed to remove object: %w", err)
+		}
 	}
 	return nil
 }

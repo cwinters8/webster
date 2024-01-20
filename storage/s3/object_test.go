@@ -11,36 +11,18 @@ import (
 )
 
 func TestBucketOps(t *testing.T) {
-	endpoint, region, accessKey, secretKey := "S3_ENDPOINT", "S3_REGION", "S3_ACCESS_KEY", "S3_SECRET_KEY"
-	env, err := utils.GetEnv(endpoint, accessKey, secretKey)
+	region, accessKey, secretKey := "S3_REGION", "S3_ACCESS_KEY", "S3_SECRET_KEY"
+	env, err := utils.GetEnv(accessKey, secretKey)
 	if err != nil {
 		t.Fatalf("failed to get env vars: %v", err)
 	}
-	client, err := s3.NewClient(env[endpoint], env[region], env[accessKey], env[secretKey])
+	client, err := s3.NewClient("s3.amazonaws.com", env[region], env[accessKey], env[secretKey])
 	if err != nil {
 		t.Fatalf("failed to create S3 client: %v", err)
 	}
 	ctx := context.Background()
 
-	// new bucket
-	bucket := "webster-test"
-	if err := client.NewBucket(ctx, bucket, true); err != nil {
-		t.Fatalf("failed to create bucket: %v", err)
-	}
-	defer func(t *testing.T) {
-		if err := client.RemoveBucket(ctx, bucket); err != nil {
-			t.Fatal(err)
-		}
-	}(t)
-	exists, err := client.BucketExists(ctx, bucket)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !exists {
-		t.Errorf("wanted bucket %s to exist", bucket)
-	}
-
-	t.Run("file", func(t *testing.T) {
+	newFile := func(t *testing.T, bucket string) (versionID string, size int64) {
 		file := "hello.txt"
 		content := "Hello World"
 		if err := os.MkdirAll("tmp", 0755); err != nil {
@@ -67,10 +49,6 @@ func TestBucketOps(t *testing.T) {
 		if size == 0 {
 			t.Errorf("wanted size of put file to be greater than 0")
 		}
-		t.Log("version ID:", version)
-		if len(version) == 0 {
-			t.Errorf("wanted non-empty version ID")
-		}
 
 		// retrieve it and verify contents
 		getTmp, err := os.MkdirTemp("tmp", "")
@@ -88,5 +66,59 @@ func TestBucketOps(t *testing.T) {
 		if got != content {
 			t.Errorf("wanted file contents `%s`; got `%s`", content, got)
 		}
+		return version, size
+	}
+
+	t.Run("versioning", func(t *testing.T) {
+		// new bucket
+		bucket := "webster-test-versioned"
+		if err := client.NewBucket(ctx, bucket, true); err != nil {
+			t.Fatalf("failed to create bucket: %v", err)
+		}
+		defer func(t *testing.T) {
+			if err := client.RemoveBucket(ctx, bucket); err != nil {
+				t.Fatal(err)
+			}
+		}(t)
+		exists, err := client.BucketExists(ctx, bucket)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !exists {
+			t.Errorf("wanted bucket %s to exist", bucket)
+		}
+
+		version, _ := newFile(t, bucket)
+		t.Log("version ID:", version)
+		if len(version) == 0 {
+			t.Error("wanted non-empty version ID")
+		}
 	})
+
+	t.Run("no_versioning", func(t *testing.T) {
+		// new bucket
+		bucket := "webster-test"
+		if err := client.NewBucket(ctx, bucket, false); err != nil {
+			t.Fatalf("failed to create bucket: %v", err)
+		}
+		defer func(t *testing.T) {
+			if err := client.RemoveBucket(ctx, bucket); err != nil {
+				t.Fatal(err)
+			}
+		}(t)
+		exists, err := client.BucketExists(ctx, bucket)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !exists {
+			t.Errorf("wanted bucket %s to exist", bucket)
+		}
+
+		version, _ := newFile(t, bucket)
+		if len(version) != 0 {
+			t.Errorf("wanted empty version ID; got %s", version)
+		}
+	})
+
+	// TODO: verify file removal only removes the files that should be removed
 }
