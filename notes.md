@@ -6,13 +6,11 @@ Enable users to create and manage website content in a WYSIWYG editor, like Fron
 
 ## differentiators
 
+Note: Many of the 'features' below are not in place yet.
+
 ### Data ownership
 
-You own all your data by default. Your content files are accessible and you can do with them as you wish. You can also set up self-hosted Webster if you don't want to keep using the hosted version.
-
-<!-- TODO: include this promise in terms and conditions -->
-
-We will **never** sell your data, even if you're using the free tier. That is a promise.
+You own all your data by default. Your content files are accessible and you can do with them as you wish.
 
 ### Offline first
 
@@ -30,13 +28,11 @@ Did something not quite look right on your recent deployment? You can roll any p
 
 You can integrate pages not built with Webster in your website, enabling nearly endless possibilities 🚀
 
-### Cross platform
-
-You can use Webster from any desktop or mobile device 📱
-
-## implementation
+## Hosting
 
 Host on Oracle Cloud [Container Instances](https://www.oracle.com/cloud/cloud-native/container-instances/) for free - each tenancy gets ~4 OCPUs and ~24 GB memory free every month for 'Ampere' (arm) compute
+
+## Useful packages
 
 [GitHub module for Go](https://github.com/google/go-github)
 [git module](https://pkg.go.dev/github.com/go-git/go-git/v5) to enable any git provider
@@ -45,4 +41,6 @@ Host on Oracle Cloud [Container Instances](https://www.oracle.com/cloud/cloud-na
 
 - [ ] Pass existing content to editor
 - [ ] Stay on the same page after POST request
+- [ ] Authentication
+- [ ] Save output HTML content to a GitHub repo and/or file store (e.g. S3 or an S3-compatible service)
 - [ ] [Custom skin](https://www.tiny.cloud/docs/tinymce/latest/creating-a-skin/) for editor
